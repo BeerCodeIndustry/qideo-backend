@@ -1,0 +1,27 @@
+version: "3.10"
+
+
+services:
+  backend:
+    build: backend
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - env/backend.env
+      - env/db.env
+
+  db:
+    image: postgres:10
+    stop_signal: SIGINT  # Fast shutdown.
+    ports:
+      - "5555:5432"
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data:delegated
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
+      timeout: 30s
+      interval: 5s
+    env_file:
+      - env/db.env
