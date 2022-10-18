@@ -1,1 +1,1 @@
-backend: sh -c 'cd ./backend/ && exec gunicorn config.wsgi --log-file -'
+backend: gunicorn backend.wsgi --log-file -
