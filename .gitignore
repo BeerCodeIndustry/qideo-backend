@@ -117,6 +117,9 @@ celerybeat.pid
 venv/
 venv.bak/
 
+env/backend.env
+env/db.env
+
 # Spyder project settings
 .spyderproject
 .spyproject
