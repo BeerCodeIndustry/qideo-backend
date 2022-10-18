@@ -1,0 +1,34 @@
+version: "3.9"
+
+
+services:
+  backend:
+    image: beer_backend
+    build: backend
+    command: bash -c "./manage.py migrate && ./manage.py collectstatic --noinput &&while :; do exec ./manage.py runserver 0.0.0.0:8000; done;"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/code:cached
+    depends_on:
+      - db
+    env_file:
+      - env/backend.env
+      - env/db.env
+
+  db:
+    image: postgres:11
+    stop_signal: SIGINT  # Fast shutdown.
+    ports:
+      - "5555:5432"
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data:delegated
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
+      timeout: 30s
+      interval: 5s
+    env_file:
+      - env/db.env
+
+volumes:
+  postgresql_data:
