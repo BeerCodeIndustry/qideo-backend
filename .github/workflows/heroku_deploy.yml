@@ -18,3 +18,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "qideo-backend"
           heroku_email: "chainhokes@gmail.com"
+          branch: master
