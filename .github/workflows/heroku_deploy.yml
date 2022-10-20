@@ -8,13 +8,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./backend
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
+          appdir: "backend"
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "qideo-backend"
           heroku_email: "chainhokes@gmail.com"
