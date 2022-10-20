@@ -1,3 +1,4 @@
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.urls import path, re_path
 from rest_framework_simplejwt.views import (
@@ -34,4 +35,4 @@ swagger_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-] + swagger_urls + jwt_urls
+] + swagger_urls + jwt_urls + staticfiles_urlpatterns()
