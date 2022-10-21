@@ -16,6 +16,7 @@ DEBUG = os.getenv("DEBUG", True)
 
 ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1', '0.0.0.0']
 
+AUTH_USER_MODEL = 'user.User'
 
 # Application definition
 
@@ -30,6 +31,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
+
+    'user.apps.UserConfig'
 ]
 
 MIDDLEWARE = [
