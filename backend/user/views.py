@@ -4,11 +4,13 @@ from rest_framework.response import Response
 from rest_framework import mixins, status
 
 from .models import User
-from .serializers import UserSerializer
+from .mixins import SerializerMappingMixin
+from .serializers import UserSerializer, LoginUserSerializer
 from .services import AuthUserService
 
 
 class AuthUserViewSet(
+    SerializerMappingMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
@@ -16,7 +18,10 @@ class AuthUserViewSet(
     GenericViewSet
 ):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer = UserSerializer
+    serializer_mapping = {
+        'login': LoginUserSerializer
+    }
 
     @action(detail=False, methods=['POST'])
     def registration(self, request):
@@ -28,4 +33,14 @@ class AuthUserViewSet(
             AuthUserService.get_tokens_for_user(serializer.instance),
             status=status.HTTP_201_CREATED,
             headers=headers
+        )
+
+    @action(detail=False, methods=['POST'])
+    def login(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.get(serializer.validated_data)
+        return Response(
+            AuthUserService.get_tokens_for_user(user),
+            status=status.HTTP_200_OK,
         )
