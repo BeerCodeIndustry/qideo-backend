@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -35,4 +35,5 @@ swagger_urls = [
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('user.urls'))
 ] + swagger_urls + jwt_urls + staticfiles_urlpatterns()
